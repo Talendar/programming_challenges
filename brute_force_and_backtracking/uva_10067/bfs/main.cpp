@@ -1,5 +1,6 @@
 /**
  * UVA - PROBLEM 10067 (https://onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=1008)
+ * Solution using the Breadth-first search algorithm.
  * @author Gabriel Nogueira (Talendar)
  */
 
