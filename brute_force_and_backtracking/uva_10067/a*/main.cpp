@@ -100,12 +100,12 @@ int solve(WheelState origin, WheelState target, Status status_table[10][10][10][
         WheelState current = pq.top();  pq.pop();
         current.set_status(status_table, VISITED);
 
+        if(current == target)
+            return current.depth;
+
         for(int i = 0; i < 4; i++) {
             for(int s = 0; s < 2; s++) {
                 WheelState w(current, spins[s], i);
-
-                if(w == target)
-                    return w.depth;
 
                 if(w.is_open(status_table))
                     pq.push(w);
