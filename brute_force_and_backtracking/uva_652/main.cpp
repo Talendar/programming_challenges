@@ -15,6 +15,10 @@ using namespace std;
 const int NUM_TILES = 3;
 
 
+/**
+ * Defines the general structure and behaviour of an instance of the puzzle.
+ * 
+ */
 class Puzzle {
     public:
     
@@ -22,8 +26,8 @@ class Puzzle {
     int x_row, x_col;                    // pos of the x tile
     int depth = 0;                       // distance to the origin state
     string path;                         // path (moves) from the origin to the current state
-    string key = "";
-    int dist2target;
+    string key = "";                     // key unique to this state
+    int dist2target;                     // Manhattan distance from this state to the target state
     Puzzle() {}
 
     /**
@@ -56,6 +60,9 @@ class Puzzle {
         this->calc_dist();
     }
 
+    /**
+     * Returns the valid moves for the current configuration of the board.
+     */
     vector<char> valid_moves() {
         vector<char> m;
 
@@ -71,6 +78,7 @@ class Puzzle {
         return m;
     }
 
+    // used for debugging
     void print() {
         for(int i = 0; i < NUM_TILES; i++) {
             for(int j = 0; j < NUM_TILES; j++) {
@@ -81,7 +89,7 @@ class Puzzle {
     }
 
     /**
-     * Returns the distance between the current state and the target state.
+     * Updates the distance between the current state and the target state.
      */
     void calc_dist() {
         this->dist2target = 0;
@@ -118,6 +126,33 @@ class BoardComparator {
 };
 
 
+/**
+ * Returns true if the puzzle is solvable and false otherwise.
+ * Formula obtained from: https://www.cs.bham.ac.uk/~mdr/teaching/modules04/java2/TilesSolvability.html
+ */
+bool is_solvable(string board, int x_row) {
+    int inversions = 0, tiles = NUM_TILES * NUM_TILES;
+    for(int i = 0; i < tiles; i++) {
+        char c1 = board[i];
+        if(c1 == 'x') continue;
+        
+        for(int j = i+1; j < tiles; j++) {
+            char c2 = board[j];
+            if(c2 == 'x') continue;
+
+            if(c1 > c2) 
+                inversions++;
+        }
+    }
+
+    //( (grid width odd) && (#inversions even) )  ||  ( (grid width even) && ((blank on odd row from bottom) == (#inversions even)) )
+    return ( (NUM_TILES % 2 == 1) && (inversions % 2 == 0) ) || ( (NUM_TILES % 2 == 0) && ( ((NUM_TILES - x_row) % 2 == 1 ) == (inversions % 2 == 0)) );
+}
+
+
+/**
+ * Solves the puzzle using A*.
+ */
 string solve(Puzzle origin)
 {
     unordered_map<string, void*> visited;
@@ -162,7 +197,11 @@ int main()
             }
         }
 
-        cout << solve(origin) << endl;
+        if(is_solvable(origin.key, origin.x_row)) 
+            cout << solve(origin) << endl;
+        else 
+            cout << "unsolvable" << endl;
+
         if(ex != (n-1))
             cout << endl;
     }
