@@ -1,0 +1,21 @@
+Dado um troco de valor V, queremos chegar à V combinando-se moedas de um conjunto M = {M1, M2, .. , Mm} com moedas de diferentes valores. Qual é o número mÃínimo de moedas que perfazem o valor V?
+
+
+Entrada
+
+Primeiro entrada: N, indicando o número de casos de teste. 
+As linhas subsequentes são compostas por valores inteiros, na seguinte ordem:
+O valor V (0 <= V <= 100000); a quantidade de moedas Q (1 <= Q <= 30) e Q valores inteiros m ( 1 <= m <= 100).
+
+O problema pode nao ter solução. Nesse caso, imprima 'sem solucao'.
+
+
+Input
+
+2
+10 2 1 5
+7 4 3 4 5 1
+
+Output
+2
+2
