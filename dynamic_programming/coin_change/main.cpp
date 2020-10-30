@@ -1,5 +1,5 @@
 /**
- * Solution for the coin problem.
+ * Solution for the coin change problem.
  * @author Gabriel Nogueira (Talendar)
  */
 
